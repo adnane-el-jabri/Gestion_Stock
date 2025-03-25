@@ -1,0 +1,6 @@
+Client/Client.java
+Model/Article.java
+Model/Famille.java
+Serveur/IArticleServices.java
+Serveur/ArticleServicesImpl.java
+Serveur/RMIServer.java
