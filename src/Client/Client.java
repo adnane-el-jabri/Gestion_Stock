@@ -17,11 +17,12 @@ public class Client {
             IArticleServices stub = (IArticleServices) reg.lookup("ArticleServices");
 
             // Appel de la méthode distante à l'aide de l'objet obtenu
-            for(Article article : stub.getArticles()) {
+            /*for(Article article : stub.getArticles()) {
                 System.out.println(article.toString());
-            }
+            }*/
             //Famille fm = new Famille(2,"voiture");
-            //System.out.println(stub.addArticle(new Article(4,"article",54,23,fm)));
+            System.out.println(stub.updateQuantity(1,898));
+
 
         } catch (Exception e) {
             System.err.println(e.toString());
