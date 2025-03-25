@@ -53,6 +53,6 @@ public class Article implements Serializable {
         this.nom = nom;
     }
     public String toString(){
-        return reference+" "+ nom +" " +quantiteStock+" "+prix+" "+famille.getNom();
+        return reference+" nom : "+ nom +" " +quantiteStock+" "+prix+" "+famille.getNom();
     }
 }

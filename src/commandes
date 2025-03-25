@@ -1,0 +1,5 @@
+javac -cp ".;lib/mysql-connector-j-9.2.0.jar" @source.txt
+java -cp ".;lib/mysql-connector-j-9.2.0.jar" Serveur.RMIServer
+java -cp ".;lib/mysql-connector-j-9.2.0.jar" Client.Client
+
+ start rmiregistry
