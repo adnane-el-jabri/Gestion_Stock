@@ -22,6 +22,19 @@ public class Client {
             }
             //Famille fm = new Famille(2,"voiture");
             //System.out.println(stub.addArticle(new Article(4,"article",54,23,fm)));
+            int refRecherche = 12;
+            Article article = stub.getArticleByRef(refRecherche);
+            if (article != null) {
+                System.out.println("Article trouvé !");
+                System.out.println("Référence : " + article.getReference());
+                System.out.println("Nom       : " + article.getNom());
+                System.out.println("Quantité  : " + article.getStock());
+                System.out.println("Prix      : " + article.getPrix());
+                System.out.println("Famille   : " + article.getFamille().getNom());
+            } else {
+                System.out.println("Aucun article trouvé avec la référence " + refRecherche);
+            }
+
 
         } catch (Exception e) {
             System.err.println(e.toString());

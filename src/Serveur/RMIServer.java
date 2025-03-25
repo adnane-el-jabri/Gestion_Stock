@@ -11,7 +11,7 @@ public class RMIServer {
 
             IArticleServices stub = (IArticleServices) UnicastRemoteObject.exportObject(service, 0);
             Registry registry = LocateRegistry.getRegistry();
-            registry.bind("ArticleServices", stub);
+            registry.rebind("ArticleServices", stub);
             System.out.println("Server ready");
         }catch (Exception e) {
             e.printStackTrace();
