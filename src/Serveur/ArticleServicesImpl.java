@@ -77,4 +77,36 @@ public class ArticleServicesImpl  implements IArticleServices {
         }
     }
 
+    @Override
+    public int getQuantity(int reference) throws RemoteException {
+        int quantity = 0;
+        try{
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM article WHERE reference = ?");
+            stmt.setInt(1, reference);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                quantity = rs.getInt("quantite_stocke");
+            }
+            return quantity;
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return  quantity;
+    }
+
+    @Override
+    public boolean updateQuantity(int reference, int quantity) throws RemoteException {
+        try {
+            PreparedStatement ps = connection.prepareStatement("UPDATE article set quantite_stocke = ? where reference = ?");
+            ps.setInt(1, quantity);
+            ps.setInt(2, reference);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
