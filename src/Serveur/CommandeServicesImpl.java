@@ -21,6 +21,9 @@ public class CommandeServicesImpl implements ICommandeServices{
     }
 
     @Override
+    public boolean addArticleCommande(String nom, int id_commande) throws RemoteException {
+        try{
+
     public boolean addArticleCommande(String nom, int id_commande, int quantiteCommande) throws RemoteException {
         try {
             // Recherche de l'article
@@ -68,6 +71,7 @@ public class CommandeServicesImpl implements ICommandeServices{
             psInsertCommandeArticle.setInt(1, id_commande);
             psInsertCommandeArticle.setInt(2, reference);
             psInsertCommandeArticle.executeUpdate();
+
 
             // Mise à jour stock
             PreparedStatement psUpdateStock = connection.prepareStatement(
