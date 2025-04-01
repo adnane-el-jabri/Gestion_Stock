@@ -21,9 +21,6 @@ public class CommandeServicesImpl implements ICommandeServices{
     @Override
     public boolean addArticleCommande(String nom, int id_commande) throws RemoteException {
         try{
-            System.out.println("Vous voulez commander quel article ?");
-            Scanner sc = new Scanner(System.in);
-            sc.next();
 
 
         }catch (Exception e){

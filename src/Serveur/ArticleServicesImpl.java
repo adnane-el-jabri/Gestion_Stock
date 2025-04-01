@@ -15,7 +15,7 @@ public class ArticleServicesImpl  implements IArticleServices {
         super();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestionstock", "root", "root");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestionstock", "root", "");
         } catch (Exception e) {
             e.printStackTrace();
         }
