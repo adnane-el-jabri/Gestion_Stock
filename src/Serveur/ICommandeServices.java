@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 import java.sql.Date;
 
 public interface ICommandeServices extends Remote {
-    public boolean addArticleCommande(String nom, int id_commande) throws RemoteException;
+    public boolean addArticleCommande(String nomArticle, int id_commande, int quantiteCommande) throws RemoteException;
+    public void genererFacture(int id_commande) throws RemoteException;
 
 }
