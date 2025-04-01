@@ -37,7 +37,7 @@ public class ArticleServicesImpl  implements IArticleServices {
 
                 // Requête pour récupérer la famille de l'article
                 PreparedStatement familleStmt = connection.prepareStatement(
-                        "SELECT * FROM famille WHERE id = ?");
+                        "SELECT * FROM famille WHERE id_famille = ?");
                 familleStmt.setInt(1, id_famille);
                 ResultSet rsFamille = familleStmt.executeQuery();
 
@@ -123,10 +123,10 @@ public class ArticleServicesImpl  implements IArticleServices {
                 String nom = rs.getString("nom_article");
                 int quantite = rs.getInt("quantite_stocke");
                 float prix = rs.getFloat("prix_unitaire");
-                int id_famille = rs.getInt("id");
+                int id_famille = rs.getInt("id_famille");
                 Famille famille = null;
                 PreparedStatement familleStmt = connection.prepareStatement(
-                        "SELECT * FROM famille WHERE id = ?");
+                        "SELECT * FROM famille WHERE id_famille = ?");
                 familleStmt.setInt(1, id_famille);
                 ResultSet rsFamille = familleStmt.executeQuery();
                 if (rsFamille.next()) {

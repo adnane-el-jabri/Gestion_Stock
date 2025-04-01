@@ -14,15 +14,14 @@ public class CommandeServicesImpl implements ICommandeServices{
         super();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestionstock", "root", "root");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestionstock", "root", "");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public boolean addArticleCommande(String nom, int id_commande) throws RemoteException {
-        try{
+
 
     public boolean addArticleCommande(String nom, int id_commande, int quantiteCommande) throws RemoteException {
         try {
