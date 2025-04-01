@@ -3,6 +3,7 @@ package Serveur;
 import java.rmi.RemoteException;
 import java.sql.*;
 import java.sql.Date;
+import java.util.Scanner;
 
 public class CommandeServicesImpl implements ICommandeServices{
     private Connection connection;
@@ -18,15 +19,11 @@ public class CommandeServicesImpl implements ICommandeServices{
     }
 
     @Override
-    public boolean addCommande(int id, Date date, float total, int quantite, String status) throws RemoteException {
+    public boolean addArticleCommande(String nom, int id_commande) throws RemoteException {
         try{
-            PreparedStatement pr = connection.prepareStatement("INSERT into commande values (?,?,?,?,?)");
-            pr.setInt(1, id);
-            pr.setDate(2,date);
-            pr.setFloat(3,total);
-            pr.setInt(4,quantite);
-            pr.setString(5,status);
-            return pr.executeUpdate()>0;
+            System.out.println("Vous voulez commander quel article ?");
+            Scanner sc = new Scanner(System.in);
+            sc.next();
 
 
         }catch (Exception e){
