@@ -11,4 +11,5 @@ public interface IArticleServices extends Remote {
     boolean addArticle(Article article) throws RemoteException;
     int getQuantity(int reference) throws RemoteException;
     boolean updateQuantity(int reference, int quantity) throws RemoteException;
+    public Article getArticleByRef(int ref) throws RemoteException;
 }

@@ -15,7 +15,7 @@ public class ArticleServicesImpl  implements IArticleServices {
         super();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestionstock", "root", "");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestionstock", "root", "root");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -107,6 +107,44 @@ public class ArticleServicesImpl  implements IArticleServices {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public Article getArticleByRef(int ref) throws RemoteException {
+        Article article = null;
+        System.out.println("Recherche de l'article avec référence : " + ref);
+        try {
+            String sql = "SELECT * FROM article WHERE reference = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, ref);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int reference = rs.getInt("reference");
+                String nom = rs.getString("nom_article");
+                int quantite = rs.getInt("quantite_stocke");
+                float prix = rs.getFloat("prix_unitaire");
+                int id_famille = rs.getInt("id");
+                Famille famille = null;
+                PreparedStatement familleStmt = connection.prepareStatement(
+                        "SELECT * FROM famille WHERE id = ?");
+                familleStmt.setInt(1, id_famille);
+                ResultSet rsFamille = familleStmt.executeQuery();
+                if (rsFamille.next()) {
+                    String nomFamille = rsFamille.getString("nom_famille");
+                    famille = new Famille(id_famille, nomFamille);
+                }
+                article = new Article(reference, nom, quantite, prix, famille);
+                System.out.println("Article construit : " + article);
+            } else {
+                System.out.println("Aucun article trouvé avec la référence : " + ref);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erreur SQL dans getArticleByRef : " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return article;
     }
 
 }
