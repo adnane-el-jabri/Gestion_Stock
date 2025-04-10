@@ -151,4 +151,17 @@ public class CommandeServicesImpl implements ICommandeServices{
             e.printStackTrace();
         }
     }
+
+    @Override
+    public boolean payerCommande(int id_commande) throws RemoteException {
+        try {
+            PreparedStatement ps = connection.prepareStatement("UPDATE commande set status = ? where id_commande = ?");
+            ps.setString(1, "Payé");
+            ps.setInt(2, id_commande);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

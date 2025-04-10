@@ -51,12 +51,13 @@ public class Client {
             // === 3. Ajouter un article à une commande ===
             System.out.print("Voulez-vous ajouter un article à une commande ? (y/n) : ");
             String ajout = sc.nextLine();
+            int idCommande = 0;
             if (ajout.equalsIgnoreCase("y")) {
                 System.out.print("Nom de l'article à commander : ");
                 String nomArticle = sc.nextLine();
 
                 System.out.print("ID de la commande : ");
-                int idCommande = sc.nextInt();
+            idCommande = sc.nextInt();
                 sc.nextLine(); // vider le buffer
 
                 System.out.print("Quantité à commander : ");
@@ -75,6 +76,14 @@ public class Client {
                 int idFacture = sc.nextInt();
                 sc.nextLine(); // vider le buffer
                 commandeStub.genererFacture(idFacture);
+            }
+            System.out.println("Passez au paiement ");
+            String reponsePaiement = sc.nextLine();
+            if (reponsePaiement.equalsIgnoreCase("y")) {
+                if(commandeStub.payerCommande(idCommande)){
+                    System.out.println("Paiement réussis");
+                }
+
             }
 
         } catch (Exception e) {
