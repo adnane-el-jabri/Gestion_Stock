@@ -2,9 +2,11 @@ package Serveur;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.rmi.RemoteException;
 import java.sql.*;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class CommandeServicesImpl implements ICommandeServices{
@@ -129,7 +131,7 @@ public class CommandeServicesImpl implements ICommandeServices{
             }
 
             // 2. Total et quantite
-            String totalQuery = "SELECT total_commande, quantite_commande FROM commande WHERE id_commande = ?";
+            String totalQuery = "SELECT total_commande, quantite_commande,mode_paiement,status FROM commande WHERE id_commande = ?";
             PreparedStatement psTotal = connection.prepareStatement(totalQuery);
             psTotal.setInt(1, id_commande);
             ResultSet rsTotal = psTotal.executeQuery();
@@ -137,12 +139,19 @@ public class CommandeServicesImpl implements ICommandeServices{
             if (rsTotal.next()) {
                 float total = rsTotal.getFloat("total_commande");
                 int quantiteTotale = rsTotal.getInt("quantite_commande");
+                String status = rsTotal.getString("status");
+                String modePaiement = rsTotal.getString("mode_paiement");
 
                 writer.write("\n--------------------------------------------------\n");
                 writer.write("Quantité totale : " + quantiteTotale + "\n");
                 writer.write(String.format("TOTAL À PAYER : %.2f €\n", total));
-            }
+                writer.write("\n--------------------------------------------------\n");
+                writer.write("status : " + status + "\n");
+                writer.write("Mode de Paiement: " + modePaiement);
+                writer.write("\n");
 
+            }
+            writer.write("Date : " + LocalDate.now() + "\n");
             writer.close();
             System.out.println("Facture générée dans le fichier : " + fileName);
 
@@ -153,11 +162,13 @@ public class CommandeServicesImpl implements ICommandeServices{
     }
 
     @Override
-    public boolean payerCommande(int id_commande) throws RemoteException {
+    public boolean payerCommande(int id_commande, String modepaiement) throws RemoteException {
         try {
-            PreparedStatement ps = connection.prepareStatement("UPDATE commande set status = ? where id_commande = ?");
+
+            PreparedStatement ps = connection.prepareStatement("UPDATE commande set status = ?,mode_paiement= ? where id_commande = ?");
             ps.setString(1, "Payé");
-            ps.setInt(2, id_commande);
+            ps.setString(2, modepaiement);
+            ps.setInt(3, id_commande);
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();

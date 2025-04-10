@@ -68,6 +68,23 @@ public class Client {
                 System.out.println(success ? "Article ajouté à la commande !" : "Échec de l'ajout à la commande.");
             }
 
+
+            System.out.println("Passez au paiement (Y/N) :  ");
+            String reponsePaiement = sc.nextLine();
+            if (reponsePaiement.equalsIgnoreCase("y")) {
+                System.out.println("Vous reglez comment (c : CB, e :espece )");
+                String comment = sc.nextLine();
+                String mode ="";
+                if (comment.equalsIgnoreCase("c")) {
+                    mode = "CB";
+                }else if (comment.equalsIgnoreCase("e")) {
+                    mode = "Espece";
+                }
+                if(commandeStub.payerCommande(idCommande,mode)){
+                    System.out.println("Paiement réussis");
+                }
+
+            }
             // === 4. Générer une facture ===
             System.out.print("Voulez-vous générer une facture pour une commande ? (y/n) : ");
             String reponseFacture = sc.nextLine();
@@ -77,14 +94,7 @@ public class Client {
                 sc.nextLine(); // vider le buffer
                 commandeStub.genererFacture(idFacture);
             }
-            System.out.println("Passez au paiement ");
-            String reponsePaiement = sc.nextLine();
-            if (reponsePaiement.equalsIgnoreCase("y")) {
-                if(commandeStub.payerCommande(idCommande)){
-                    System.out.println("Paiement réussis");
-                }
 
-            }
 
         } catch (Exception e) {
             System.err.println("Erreur côté client : " + e.getMessage());
