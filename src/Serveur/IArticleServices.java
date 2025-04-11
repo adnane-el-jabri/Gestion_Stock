@@ -12,4 +12,5 @@ public interface IArticleServices extends Remote {
     int getQuantity(int reference) throws RemoteException;
     boolean updateQuantity(int reference, int quantity) throws RemoteException;
     public Article getArticleByRef(int ref) throws RemoteException;
+    List<Article> rechercherParFamille(String famille) throws RemoteException;
 }

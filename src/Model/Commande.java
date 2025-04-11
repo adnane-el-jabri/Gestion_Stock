@@ -1,7 +1,10 @@
 package Model;
 
 import java.io.Serializable;
-import  java.sql.Date;
+//import  java.sql.Date;
+import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Commande implements Serializable {
     private int id_commande;
@@ -9,13 +12,15 @@ public class Commande implements Serializable {
     private float total_commande;
     private int quantite_commande;
     private  String status;
+    private ArrayList<Article> articles;
 
-    public Commande(int id, Date date, float total, int quantite, String status) {
+    public Commande(int id, Date date, float total, int quantite, String status, ArrayList<Article> articles) {
         this.id_commande = id;
         this.date_commande = date;
         this.total_commande = total;
         this.quantite_commande = quantite;
         this.status = status;
+        this.articles = articles;
     }
 
     public void setId_commande(int id) {
@@ -33,6 +38,9 @@ public class Commande implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+    public void setArticles(ArrayList<Article> articles) {
+        this.articles = articles;
+    }
     public int getId_commande() {
         return id_commande;
     }
@@ -47,6 +55,9 @@ public class Commande implements Serializable {
     }
     public String getStatus() {
         return status;
+    }
+    public ArrayList<Article> getArticles() {
+        return articles;
     }
 
 

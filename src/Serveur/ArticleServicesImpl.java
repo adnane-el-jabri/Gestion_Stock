@@ -2,7 +2,6 @@ package Serveur;
 
 import Model.Article;
 import Model.Famille;
-
 import java.rmi.RemoteException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class ArticleServicesImpl  implements IArticleServices {
         super();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestionstock", "root", "");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestionstock", "root", "root");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -58,12 +57,11 @@ public class ArticleServicesImpl  implements IArticleServices {
         return articles;
     }
 
-
     @Override
     public boolean addArticle(Article article) throws RemoteException {
         try {
             PreparedStatement ps = connection.prepareStatement(
-                    "INSERT INTO article (reference, quantite_stocke, prix_unitaire, id_famille) VALUES (?, ?, ?, ?, ?)");
+                    "INSERT INTO article (reference, nom_article, quantite_stocke, prix_unitaire, id_famille) VALUES (?, ?, ?, ?, ?)");
             ps.setInt(1, article.getReference());
             ps.setString(2,article.getNom());
             ps.setInt(3, article.getStock());
@@ -146,5 +144,39 @@ public class ArticleServicesImpl  implements IArticleServices {
 
         return article;
     }
+
+    @Override
+    public List<Article> rechercherParFamille(String familleNom) throws RemoteException {
+        List<Article> articles = new ArrayList<>();
+        try {
+            String sql = """
+            SELECT a.*
+            FROM article a
+            JOIN famille f ON a.id_famille = f.id_famille
+            WHERE f.nom_famille = ? AND a.quantite_stocke > 0
+        """;
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, familleNom);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int reference = rs.getInt("reference");
+                String nom = rs.getString("nom_article");
+                int quantite = rs.getInt("quantite_stocke");
+                float prix = rs.getFloat("prix_unitaire");
+                int id_famille = rs.getInt("id_famille");
+
+                Famille famille = new Famille(id_famille, familleNom);
+
+                Article article = new Article(reference, nom, quantite, prix, famille);
+                articles.add(article);
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur SQL dans rechercherParFamille : " + e.getMessage());
+            e.printStackTrace();
+        }
+        return articles;
+    }
+
 
 }
