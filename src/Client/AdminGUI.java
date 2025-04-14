@@ -49,6 +49,8 @@ public class AdminGUI extends JFrame {
         addButton("Chercher l'article", section1, e -> chercherArticle());
         addButton("Consulter Stock", section1, e -> consulterStock());
         addButton("Mettre à jour Stock", section1, e -> majStock());
+        addButton("Mettre à jour Prix", section1, e -> majPrix());
+
 
         // Section 2 : Ajouter article
         JPanel section2 = createSection();
@@ -94,12 +96,13 @@ public class AdminGUI extends JFrame {
         scrollPane.setPreferredSize(new Dimension(0, 250));
         add(scrollPane, BorderLayout.SOUTH);
 
+        // MODIFICATION ICI Connexion sur serveur central uniquement
         try {
-            Registry reg = LocateRegistry.getRegistry("localhost", 1099);
+            Registry reg = LocateRegistry.getRegistry("localhost", 2099); // Central uniquement
             articleStub = (IArticleServices) reg.lookup("ArticleServices");
             commandeStub = (ICommandeServices) reg.lookup("CommandeServices");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erreur de connexion au serveur !");
+            JOptionPane.showMessageDialog(this, "Erreur de connexion au serveur central !");
             e.printStackTrace();
         }
     }
@@ -200,6 +203,33 @@ public class AdminGUI extends JFrame {
             ex.printStackTrace();
         }
     }
+
+    private void majPrix() {
+        try {
+            String refText = refField.getText().trim();
+            if (refText.isEmpty()) {
+                resultArea.setText("Saisissez une référence pour mettre à jour !");
+                return;
+            }
+            int ref = Integer.parseInt(refText);
+            String newPrix = JOptionPane.showInputDialog(this, "Nouveau prix :", "Mise à jour Prix", JOptionPane.PLAIN_MESSAGE);
+            if (newPrix == null || newPrix.trim().isEmpty()) {
+                resultArea.setText("Prix vide, mise à jour annulée !");
+                return;
+            }
+            float prix = Float.parseFloat(newPrix.trim());
+            boolean updated = articleStub.updatePrix(ref, prix);
+            if (updated) {
+                resultArea.setText("Prix mis à jour pour Réf " + ref + ".");
+            } else {
+                resultArea.setText("Impossible de mettre à jour le prix.");
+            }
+        } catch (Exception ex) {
+            resultArea.setText("Erreur lors de la mise à jour du prix.");
+            ex.printStackTrace();
+        }
+    }
+
 
     private void ajouterArticle() {
         try {

@@ -177,6 +177,18 @@ public class ArticleServicesImpl  implements IArticleServices {
         }
         return articles;
     }
-
+    @Override
+    public boolean updatePrix(int reference, float prix) throws RemoteException {
+        try {
+            PreparedStatement ps = connection.prepareStatement(
+                    "UPDATE article SET prix_unitaire = ? WHERE reference = ?");
+            ps.setFloat(1, prix);
+            ps.setInt(2, reference);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }

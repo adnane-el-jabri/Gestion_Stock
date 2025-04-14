@@ -77,14 +77,30 @@ public class ClientGUI extends JFrame {
         resultArea.setBorder(BorderFactory.createTitledBorder("Résultat"));
         add(new JScrollPane(resultArea), BorderLayout.SOUTH);
 
+        // MODIFICATION ICI Connexion automatique selon le magasin
         try {
-            Registry reg = LocateRegistry.getRegistry("localhost", 1099);
-            articleStub = (IArticleServices) reg.lookup("ArticleServices");
-            commandeStub = (ICommandeServices) reg.lookup("CommandeServices");
+            Registry regCentral = LocateRegistry.getRegistry("localhost", 2099); // Serveur central
+            articleStub = (IArticleServices) regCentral.lookup("ArticleServices");
+
+            int portMagasin = getPort(magasin); // Récupération du port selon magasin
+            Registry regMagasin = LocateRegistry.getRegistry("localhost", portMagasin);
+            commandeStub = (ICommandeServices) regMagasin.lookup("CommandeServices");
+
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erreur de connexion au serveur RMI !");
+            JOptionPane.showMessageDialog(this, "Erreur de connexion aux serveurs RMI !");
             e.printStackTrace();
         }
+    }
+
+    //AJOUT NOUVELLE MÉTHODE pour choisir le port
+    private int getPort(String magasin) {
+        return switch (magasin) {
+            case "G20" -> 1102;
+            case "Auchan" -> 1100;
+            case "Match" -> 1101;
+            case "Leclerc" -> 1103;
+            default -> 1102;
+        };
     }
 
     private JTextField createLabeledField(JPanel panel, String labelText) {
