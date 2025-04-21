@@ -38,7 +38,7 @@ public class AccueilGUI extends JFrame {
 
         centerPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        magasinComboBox = new JComboBox<>(new String[]{"G20", "Auchan", "Match", "Leclerc"});
+        magasinComboBox = new JComboBox<>(new String[]{"Amiens", "Paris", "Rouen", "Marseille"});
         magasinComboBox.setMaximumSize(new Dimension(200, 30));
         magasinComboBox.setAlignmentX(Component.CENTER_ALIGNMENT);
         centerPanel.add(magasinComboBox);

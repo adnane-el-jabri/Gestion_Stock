@@ -13,8 +13,7 @@ public class CommandeServicesImpl implements ICommandeServices{
     public CommandeServicesImpl() throws RemoteException {
         super();
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/gestionstock", "root", "root");
+            connection = DatabaseConnection.getInstance().getConnection();
         } catch (Exception e) {
             e.printStackTrace();
         }
