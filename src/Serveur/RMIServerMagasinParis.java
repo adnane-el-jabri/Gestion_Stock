@@ -3,7 +3,7 @@ package Serveur;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-public class RMIServerMagasinAuchan {
+public class RMIServerMagasinParis {
     public static void main(String[] args) {
         try {
             // Connexion au registre RMI du serveur central (port 2099)
@@ -28,7 +28,7 @@ public class RMIServerMagasinAuchan {
             registry.bind("ArticleServices", stubArticle);
             registry.bind("CommandeServices", stubCommande);
 
-            System.out.println("Serveur Magasin Auchan démarré sur le port 1100 !");
+            System.out.println("Serveur Magasin Paris démarré sur le port 1100 !");
         } catch (Exception e) {
             // En cas d'erreur, affichage de la pile d'exception
             e.printStackTrace();

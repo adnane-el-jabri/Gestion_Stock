@@ -4,35 +4,35 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-public class RMIServerMagasinLeclerc {
+public class RMIServerMagasinAmiens {
     public static void main(String[] args) {
         try {
             // Connexion au registre RMI du serveur central (port 2099)
             Registry registryCentral = LocateRegistry.getRegistry("localhost", 2099);
 
-            // Récupération des services distants (articles et commandes) exposés par le serveur central
+            // Récupération des interfaces des services distants disponibles depuis le serveur central
             IArticleServices centralArticleService = (IArticleServices) registryCentral.lookup("ArticleServices");
             ICommandeServices centralCommandeService = (ICommandeServices) registryCentral.lookup("CommandeServices");
 
-            // Création des délégués pour faire le lien entre ce magasin et les services centraux
+            // Création des délégués pour le magasin Match, qui délèguent les appels au serveur central
             ArticleServicesDelegue articleService = new ArticleServicesDelegue(centralArticleService);
             CommandeServicesDelegue commandeService = new CommandeServicesDelegue(centralCommandeService);
 
-            // Exportation des objets distants (génération des stubs RMI)
+            // Exportation des objets distants pour qu'ils soient accessibles via RMI
             IArticleServices stubArticle = (IArticleServices) UnicastRemoteObject.exportObject(articleService, 0);
             ICommandeServices stubCommande = (ICommandeServices) UnicastRemoteObject.exportObject(commandeService, 0);
 
-            // Création du registre RMI propre à ce magasin sur le port 1103
-            Registry registry = LocateRegistry.createRegistry(1103);
+            // Création d’un registre RMI local pour le magasin Match, sur le port 1101
+            Registry registry = LocateRegistry.createRegistry(1101);
 
-            // Enregistrement des stubs dans le registre RMI local
+            // Enregistrement des services distants dans le registre RMI local du magasin
             registry.bind("ArticleServices", stubArticle);
             registry.bind("CommandeServices", stubCommande);
 
             // Message de confirmation
-            System.out.println("Serveur Magasin Leclerc démarré sur le port 1103 !");
+            System.out.println("Serveur Magasin Amiens démarré sur le port 1101 !");
         } catch (Exception e) {
-            // Gestion des erreurs éventuelles
+            // Affichage d’éventuelles erreurs
             e.printStackTrace();
         }
     }

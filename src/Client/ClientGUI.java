@@ -95,10 +95,10 @@ public class ClientGUI extends JFrame {
     //AJOUT NOUVELLE MÉTHODE pour choisir le port
     private int getPort(String magasin) {
         return switch (magasin) {
-            case "G20" -> 1102;
-            case "Auchan" -> 1100;
-            case "Match" -> 1101;
-            case "Leclerc" -> 1103;
+            case "Marseille" -> 1102;
+            case "Paris" -> 1100;
+            case "Amiens" -> 1101;
+            case "Rouen" -> 1103;
             default -> 1102;
         };
     }

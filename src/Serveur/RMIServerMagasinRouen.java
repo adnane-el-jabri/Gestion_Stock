@@ -4,17 +4,17 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-public class RMIServerMagasinG20 {
+public class RMIServerMagasinRouen {
     public static void main(String[] args) {
         try {
-            // Connexion au registre du serveur central sur le port 2099
+            // Connexion au registre RMI du serveur central (port 2099)
             Registry registryCentral = LocateRegistry.getRegistry("localhost", 2099);
 
-            // Récupération des services centraux depuis le registre
+            // Récupération des services distants (articles et commandes) exposés par le serveur central
             IArticleServices centralArticleService = (IArticleServices) registryCentral.lookup("ArticleServices");
             ICommandeServices centralCommandeService = (ICommandeServices) registryCentral.lookup("CommandeServices");
 
-            // Création des délégués qui transmettent les appels au serveur central
+            // Création des délégués pour faire le lien entre ce magasin et les services centraux
             ArticleServicesDelegue articleService = new ArticleServicesDelegue(centralArticleService);
             CommandeServicesDelegue commandeService = new CommandeServicesDelegue(centralCommandeService);
 
@@ -22,16 +22,17 @@ public class RMIServerMagasinG20 {
             IArticleServices stubArticle = (IArticleServices) UnicastRemoteObject.exportObject(articleService, 0);
             ICommandeServices stubCommande = (ICommandeServices) UnicastRemoteObject.exportObject(commandeService, 0);
 
-            // Création du registre RMI local pour le magasin G20 sur le port 1102
-            Registry registry = LocateRegistry.createRegistry(1102);
+            // Création du registre RMI propre à ce magasin sur le port 1103
+            Registry registry = LocateRegistry.createRegistry(1103);
 
-            // Enregistrement des stubs dans le registre RMI local du magasin
+            // Enregistrement des stubs dans le registre RMI local
             registry.bind("ArticleServices", stubArticle);
             registry.bind("CommandeServices", stubCommande);
 
-            System.out.println("Serveur Magasin G20 démarré sur le port 1102 !");
+            // Message de confirmation
+            System.out.println("Serveur Magasin Rouen démarré sur le port 1103 !");
         } catch (Exception e) {
-            // En cas d’erreur, affichage de la pile d’exécution
+            // Gestion des erreurs éventuelles
             e.printStackTrace();
         }
     }
